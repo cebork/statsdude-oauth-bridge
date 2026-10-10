@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<title>StatsDude · TikTok login</title>
+<style>
+  body { font: 15px/1.5 system-ui, sans-serif; background: #0d0e16; color: #ececf5; display: grid; place-items: center; min-height: 100vh; margin: 0; padding: 16px; }
+  main { max-width: 32rem; text-align: center; }
+  a { color: #a488ff; }
+</style>
+</head>
+<body>
+<main>
+  <p id="msg">Returning to the StatsDude dashboard…</p>
+</main>
+<script>
+  // TikTok Login Kit for Web only accepts https redirect URIs, and the
+  // dashboard runs on this PC (http://localhost:3005). This page just hands
+  // the one-time ?code&state over to it in the same browser; it stores and
+  // sends nothing anywhere else.
+  (function () {
+    var target = "http://localhost:3005/api/auth/tiktok/callback" + window.location.search;
+    var params = new URLSearchParams(window.location.search);
+    if (!params.get("code") && !params.get("error")) {
+      document.getElementById("msg").textContent = "Nothing to hand over: open this from the dashboard's Settings → TikTok → Connect.";
+      return;
+    }
+    document.getElementById("msg").innerHTML = 'Returning to the dashboard… <a href="' + target.replace(/"/g, "&quot;") + '">Continue</a>';
+    window.location.replace(target);
+  })();
+</script>
+</body>
+</html>
